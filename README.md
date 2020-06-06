@@ -38,7 +38,8 @@ mvnw spring-boot:run
 
 ### 四、客户端使用
 
-浏览网址http://www.liurui13.cn/demo/src/main/java/com/example/web/mathTest.html  
+浏览网址http://www.liurui13.cn/demo/src/main/java/com/example/web/mathTest.html 
+在服务器端设置的spring-boot进程运行，因此如若出现网页无法加载可联系我，我启动项目即可使用
 
 初次用请采用游客登录，若想再次登陆可记录下游客登录的昵称或ID，下次登录时
 
