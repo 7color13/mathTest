@@ -1,0 +1,5 @@
+com\example\demo\DemoApplication.class
+com\example\controller\ProductApi.class
+com\example\service\TxtSwitchArray.class
+com\example\service\QuestionService.class
+com\example\service\UserService.class
