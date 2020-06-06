@@ -36,7 +36,7 @@ mvnw spring-boot:run
 
 项目学生可以自己出题，做题，查看排行榜等
 
-###四、客户端使用
+### 四、客户端使用
 
 浏览网址http://www.liurui13.cn/demo/src/main/java/com/example/web/mathTest.html  
 
