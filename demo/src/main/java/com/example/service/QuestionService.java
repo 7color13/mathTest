@@ -1,161 +1,137 @@
 package com.example.service;
 
-import com.example.dto.Answer;
-import com.example.dto.Question;
+import com.example.config.Path;
+import com.example.dto.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class QuestionService {
-    public static List<Answer> answerList=new ArrayList<>();
-
-    public static void main(String[] args) {
-        List<Question> questionList= getQuestion(33);
-        questionList.forEach(System.out::println);
+public class UserService  {
+    public static void main(String[] args) throws Exception{
+        String info1 = oldLogin("哈瓦那的棕熊");
+        System.out.println(info1);
+        String info2 = oldLogin("张三李四王五");
+        System.out.println(info2);
     }
-    public static List<Question> getQuestion(int count) {  //获取问题函数
-        List<Question> questionList = new ArrayList<>();
-        answerList=new ArrayList<>();
-        Random rand = new Random();
-        for (int i=0;i<count;i++) {
-            Question question = null;
-            int firstNum = rand.nextInt(99) + 1;
-            int secondNum = rand.nextInt(99) + 1;
-            String comparator = randomComparator();
-            switch (comparator) {
-                case "+":
-                   question=addUtil(firstNum,secondNum);
-                   if (question==null){
-                   i=i-1;}
-                    break;
-                case "-":
-                    question=subUtil(firstNum,secondNum);
-                    break;
-                case "*":
-                    question=multiUtil(firstNum,secondNum);
-                    if (question==null){
-                        i=i-1;}
-                    break;
-                case "/":
-                    question=divideUtil(firstNum,secondNum);
-                    break;
-            }
-            if (question!=null) {
-                questionList.add(question);
+    public static User getPri() throws Exception{  //随机生成用户名昵称函数
+        List<Object> list1 = TxtSwitchArray.getTXTAsArray("src/main/java/com/example/resources/rankList.txt", "com.example.dto.User");
+        List<User> userList=getList();
+        list1=new ArrayList<>();
+        System.out.println("游客登录");
+        String id=getRandomId();
+        String userName = getRandomChineseName(6);
+        for (int i=0;i<userList.size();i++){
+            if (userList.get(i).getId().equals(id)||userList.get(i).getUserName().equals(userName)){
+                id=getRandomId();
+                userName = getRandomChineseName(6);
             }
         }
-        return questionList;
-    }
+        User user = new User(userName,id);
+        return user;
+       /* System.out.println(userList.toString());
+        for (User user1:userList){
+            Object object = (Object) user1;
+            list1.add(object);
+        }
+        System.out.println(list1.toString());*/
+        //TxtSwitchArray.arrayToTXT(list1,"src/main/java/com/example/resources/rankList.txt");
+   }
+   public static List<User> getList(){   //获取排行榜信息函数
+       List<Object> list1 = TxtSwitchArray.getTXTAsArray("src/main/java/com/example/resources/rankList.txt", "com.example.dto.User");
+       List<User> userList=new ArrayList<>();
 
-    public static String randomComparator() {  //获取随机运算符
-        Random rand = new Random();
-        String comparator = "";
-        int index = rand.nextInt(4);
-        switch (index) {
-            case 0:
-                comparator = "+";
-                break;
-            case 1:
-                comparator = "-";
-                break;
-            case 2:
-                comparator = "*";
-                break;
-            case 3:
-                comparator = "/";
-                break;
-        }
-        return comparator;
-    }
-    public static Question addUtil(int firstNum,int secondNum){  //加法控制在两位数以内
-      Question question = null;
-      int result = firstNum+secondNum;
-      if (result<100){
-           question = randomQuestionMark(firstNum,secondNum,result,"+");
-      }
-      return question;
-    }
-    /*问号位置随机函数*/
-    public static Question randomQuestionMark(int firstNum,int secondNum,int result,String comparator){
-        Question question = new Question();
-        Random random = new Random();
-        int index = random.nextInt(3);
-        Answer answer = new Answer();
-        switch (index){
-            case 0:
-                answer.setAnswer(result);
-                question.setResult("?");
-                question.setLeftNum(String.valueOf(firstNum));
-                question.setRightNum(String.valueOf(secondNum));
-                question.setComparator(comparator);
-                break;
-            case 1:
-                answer.setAnswer(secondNum);
-                question.setRightNum("?");
-                question.setLeftNum(String.valueOf(firstNum));
-                question.setComparator(comparator);
-                question.setResult(String.valueOf(result));
-                break;
-            case 2:
-                answer.setAnswer(firstNum);
-                question.setLeftNum("?");
-                question.setRightNum(String.valueOf(secondNum));
-                question.setComparator(comparator);
-                question.setResult(String.valueOf(result));
-                break;
-        }
-        answerList.add(answer);
-        return question;
-    }
-    /*控制减法在两位数以内函数*/
-    public static Question subUtil(int firstNum,int secondNum){
-        Question question = null;
-        int result =Math.abs(firstNum-secondNum);
-        if (firstNum<secondNum){
-            question=randomQuestionMark(secondNum,firstNum,result,"-");
-        }
-        else{
-        question = randomQuestionMark(firstNum,secondNum,result,"-");
-        }
-        return question;
-    }
-    /*控制乘法在两位数以内函数*/
-    public static Question multiUtil(int firstNum,int secondNum){
-        Question question = null;
-        int result=firstNum*secondNum;
-        if(result<100){
-            question=randomQuestionMark(firstNum,secondNum,result,"*");
-        }
-        return question;
-    }
-    /*控制除法在两位数以内函数*/
-    public static Question divideUtil(int firstNum,int secondNum){
-        Question question = null;
-        int flag;
-        int result;
-        if (firstNum<secondNum){
-            flag = firstNum;
-            firstNum=secondNum;
-            secondNum=flag;
-        }
-        result=firstNum/secondNum;
-        int rest = firstNum%secondNum;
-        if (rest==0){
-            randomQuestionMark(firstNum,secondNum,result,"/");
-        }
-        else{
-            question=new Question();
-            Answer answer = new Answer();
-            question.setResult("?");
-            question.setLeftNum(String.valueOf(firstNum));
-            question.setRightNum(String.valueOf(secondNum));
-            question.setComparator("/");
-            answer.setAnswer(result);
-            answerList.add(answer);
-        }
-        return question;
-    }
+       for (Object object:list1){
+           User user = (User)object;
+           userList.add(user);
+       }
+       return userList;
+   }
 
+   public static String oldLogin(String info){   //判断用户登录输入的信息是否正确函数
+        List<User> userList = getList();
+        for (int i=0;i<userList.size();i++){
+            if (userList.get(i).getId().equals(info)||userList.get(i).getUserName().equals(info)){
+                return "成功";
+            }
+        }
+           return "用户名或id错误";
+   }
+    public static String getRandomChineseName(int len) {  //获取随机中文昵称函数
+        String randomName = "";
+        for (int i = 0; i < len; i++) {
+            String str = null;
+            int hightPos, lowPos; // 定义高低位
+            Random random = new Random();
+            hightPos = (176 + Math.abs(random.nextInt(39))); // 获取高位值
+            lowPos = (161 + Math.abs(random.nextInt(93))); // 获取低位值
+            byte[] b = new byte[2];
+            b[0] = (new Integer(hightPos).byteValue());
+            b[1] = (new Integer(lowPos).byteValue());
+            try {
+                str = new String(b, "GBK"); // 转成中文
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            randomName += str;
+        }
+        return randomName;
+    }
+    public static String getRandomId(){   //获取随机ID函数
+        UUID uuid = UUID.randomUUID();
+        String uuidStr=uuid.toString();
+        uuidStr = uuidStr.replace("-","");
+        return uuidStr;
+    }
+    /*将信息排序写入文件函数*/
+    public static List<User> getRank(String duringTime,double grade,String userName,String id) throws Exception{
+        List<User> userList =new ArrayList<>();
+        userList=getList();
+        User user = new User("0",userName,id,grade,duringTime);
+        int index=userList.size();
+        int flag=-1;
+        String arr[];
+        for (int i=0;i<userList.size();i++){
+            if (userList.get(i).getUserName().equals(userName)&& userList.get(i).getGrade()>=grade){
+                return userList;
+            }
+            if (userList.get(i).getUserName().equals(userName)&&userList.get(i).getGrade()<grade){
+                userList.get(i).setGrade(grade);
+                userList.get(i).setTestTime(duringTime);
+                flag=i;
+            }
+        }
+
+        if (flag==-1){userList.add(user);}
+        File file = new File(Path.pathName+"rankList.txt");
+        FileWriter fw =new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        String str="rank\tuserName\tid\tgrade\ttestTime\n";
+        String rank="0";
+        userList = userList.stream().sorted(Comparator.comparing(User::getGrade).reversed()).collect(Collectors.toList());
+            System.out.println(userList);
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getUserName().equals(userName)) {
+                    rank = String.valueOf(i + 1);
+                    userList.get(i).setRank(rank);
+                }
+                if (userList.get(i).getGrade() < grade) {
+                    userList.get(i).setRank(String.valueOf(Integer.parseInt(userList.get(i).getRank()) + 1));
+                }
+            }
+            for (int i=0;i<userList.size();i++){
+                if (Integer.parseInt(userList.get(i).getRank())!=(i+1)){
+                    userList.get(i).setRank(String.valueOf(Integer.parseInt(userList.get(i).getRank()) -1));
+                }
+              str += userList.get(i).toString();
+            }
+            bw.write(str);
+            bw.close();
+
+        return userList;
+    }
+    /*测试函数*/
 
 }
