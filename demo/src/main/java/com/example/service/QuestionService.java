@@ -113,20 +113,9 @@ public class UserService  {
         userList = userList.stream().sorted(Comparator.comparing(User::getGrade).reversed()).collect(Collectors.toList());
             System.out.println(userList);
             for (int i = 0; i < userList.size(); i++) {
-                if (userList.get(i).getUserName().equals(userName)) {
                     rank = String.valueOf(i + 1);
                     userList.get(i).setRank(rank);
                 }
-                if (userList.get(i).getGrade() < grade) {
-                    userList.get(i).setRank(String.valueOf(Integer.parseInt(userList.get(i).getRank()) + 1));
-                }
-            }
-            for (int i=0;i<userList.size();i++){
-                if (Integer.parseInt(userList.get(i).getRank())!=(i+1)){
-                    userList.get(i).setRank(String.valueOf(Integer.parseInt(userList.get(i).getRank()) -1));
-                }
-              str += userList.get(i).toString();
-            }
             bw.write(str);
             bw.close();
 
