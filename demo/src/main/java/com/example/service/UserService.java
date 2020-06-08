@@ -91,17 +91,20 @@ public class UserService  {
         userList=getList();
         User user = new User("0",userName,id,grade,duringTime);
         int index=userList.size();
-        int flag=0;
+        int flag=-1;
+        String arr[];
         for (int i=0;i<userList.size();i++){
             if (userList.get(i).getUserName().equals(userName)&& userList.get(i).getGrade()>=grade){
                 return userList;
             }
             if (userList.get(i).getUserName().equals(userName)&&userList.get(i).getGrade()<grade){
                 userList.get(i).setGrade(grade);
-                flag=1;
+                userList.get(i).setTestTime(duringTime);
+                flag=i;
             }
         }
-        if (flag!=1){userList.add(user);}
+
+        if (flag==-1){userList.add(user);}
         File file = new File(Path.pathName+"rankList.txt");
         FileWriter fw =new FileWriter(file);
         BufferedWriter bw = new BufferedWriter(fw);
@@ -109,18 +112,13 @@ public class UserService  {
         String rank="0";
         userList = userList.stream().sorted(Comparator.comparing(User::getGrade).reversed()).collect(Collectors.toList());
             System.out.println(userList);
-            for (int i = 0; i < userList.size(); i++) {
-                if (userList.get(i).getUserName().equals(userName)) {
-                    rank = String.valueOf(i + 1);
-                    userList.get(i).setRank(rank);
+            for (int i=0;i<userList.size();i++){
+                if (Integer.parseInt(userList.get(i).getRank())!=(i+1)){
+                    userList.get(i).setRank(String.valueOf(i+1));
                 }
-                if (userList.get(i).getGrade() < grade) {
-                    userList.get(i).setRank(String.valueOf(Integer.parseInt(userList.get(i).getRank()) + 1));
-                }
-                str += userList.get(i).toString();
+              str += userList.get(i).toString();
             }
             bw.write(str);
-
             bw.close();
 
         return userList;
