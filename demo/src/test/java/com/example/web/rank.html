@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rank</title>
+</head>
+<style>
+    .rankButton{
+        margin-left: 50%;
+    }
+    .info{
+        height: 650px;
+        overflow: auto;
+        border: solid 4px #234562;
+        border-radius: 4px;
+    }
+    .title{
+        color:#ffffff;
+     }
+    .rank{
+        color:cornflowerblue;
+    }
+    body{
+        background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+    }
+</style>
+<body>
+<div id="app">
+    <input type="button" value="点击查看排行榜信息" @click="getRank" class="rankButton" v-show="find">
+
+
+<div class="info">
+    <p class="title">排名&nbsp;&nbsp; 昵称&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成绩&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用时</p>
+<p v-for="(item,i) in ranks" class="rank">
+    {{item}}
+</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var app=new Vue({
+            el: "#app",
+        data:{
+          ranks:[],
+            find:true
+        },
+        methods:{
+       getRank:function () {
+         let that =this;
+           axios.get("http://www.liurui13.cn:8080/rank").then
+           (function (response) {
+               that.find=false
+               var result =response.data;
+               console.log(response.data)
+               for (var i=0;i<result.length;i++){
+                   that.ranks.push(result[i].rank+"\xa0\xa0\xa0\xa0"+
+                       result[i].userName+"\xa0\xa0\xa0\xa0"+
+                       result[i].id+"\xa0\xa0\xa0\xa0"+result[i].grade+"\xa0\xa0\xa0\xa0"+
+                       result[i].testTime);
+               }
+           }, function (err) {
+               console.log(err);
+           })
+       }
+        },
+
+        })
+</script>
+</body>
+</html>

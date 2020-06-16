@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta  charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>小学生算数测验</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .login{
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+    .loginButton{
+        border: solid 3px cornflowerblue;
+        border-radius: 5px;
+        width: 160px;
+        height: 40px;
+        margin-top: 10px;
+        background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+    }
+    #loginText{
+        margin-top: 90px;
+        border: solid 3px #333456;
+        border-radius: 5px;
+        height: 30px;
+    }
+    .getTest{
+        position: absolute;
+        top: 20%;
+        left: 40%;
+    }
+    .getTest input{
+        height: 50px;
+        width: 200px;
+        text-align: center;
+        border-radius: 10px;
+        border: solid 5px #569801;
+    }
+    .userInfo input{
+        border: solid 4px #132920;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+    }
+    .doTest{
+        margin-top: 200px;
+        margin-left: 90px;
+    }
+    .doTest p{
+        color: aquamarine;
+        font-size: 15px;
+        padding-top: 10px;
+    }
+    .testButton{
+        margin-left: 90px;
+        width: 50px;
+        height: 30px;
+        border: solid 2px azure;
+        border-radius: 3px;
+        margin-top: 50px;
+        background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+    }
+    .testResult h3{
+        margin-left: 50px;
+        color: darkblue;
+    }
+    .answers{
+        color: darkblue;
+    }
+    .testResult input{
+        width: 180px;
+        height: 30px;
+        background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+    }
+    .jump{
+        position: relative;
+        font: normal 500 16px 'Varela Round', sans-serif;
+        color: goldenrod;
+        animation: bounce 0.75s cubic-bezier(0.05, 0, 0.2, 1) infinite alternate;
+        margin-left: 53%;
+        margin-top: 2%;
+    }
+    .letter {
+        animation: bounce 0.75s cubic-bezier(0.05, 0, 0.2, 1) infinite alternate;
+        display: inline-block;
+        transform: translate3d(0, 0, 0);
+        margin-top: 0.5em;
+        text-shadow: rgba(255, 255, 255, 0.4) 0 0 0.05em;
+        font: normal 500 32px 'Varela Round', sans-serif;
+    }
+    #message{
+        color :#61992f;
+        border: 4px solid #c4c4c4;
+        background:#ddd;
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+        border-radius:5px;
+        min-height:1em;
+        padding:5px;
+        top:-45px;
+        position:absolute;
+        text-align:center;
+        width:auto !important;
+        color:#61992f;
+        z-index:10000;
+        -moz-box-shadow:0 0 15px #eeeeee;
+        -webkit-box-shadow:0 0 15px #eeeeee;
+
+        box-shadow:0 0 15px #eeeeee;
+        outline:none;
+    }
+    #spig {
+        display:block;
+
+
+        right:90px!important;
+        bottom: 400px;
+        position: absolute;
+    }
+    #mumu{
+        display: block;
+        width:409px;
+        height:200px;
+        cursor:move;
+        right:400px!important;
+        background:url(yellowman.gif) no-repeat;
+    }
+
+    @keyframes bounce {
+        0% {
+            top: 0;
+            text-shadow: rgba(255, 255, 255, 0.4) 0 0 0.05em;
+        }
+        100% {
+            top: -1em;
+            text-shadow: rgba(255, 255, 255, 0.9) 0 1em 0.35em;
+        }
+    }
+    .scroll{
+        position: absolute;
+        bottom: 0px;
+    }
+    .scroll_span{
+        font-size: 17px;
+        color: #ffffff;
+    }
+    .userInfo p{
+        color:#ffffff;
+    }
+    .doTest p{
+        font-size: 25px;
+    }
+</style>
+<link rel="stylesheet" href="http://www.liurui13.cn/document/css/kefu.css">
+<body style="background: url('../resources/login.jpg');opacity:70%">
+<div id="app" >
+    <!--字节跳动开始-->
+    <div class="jump">
+    <h1 class="letter">算宝</h1>
+    </div>
+    <!--字节跳动结束-->
+    <!--滚动条开始-->
+    <marquee class="scroll" scrolldelay="4" scrollamount="10">
+        <span class="scroll_span">本网站已限制外网IP，如正在使用网络代理或外网IP，请切换国内IP使用&nbsp;</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span class="scroll_span">第一次进入本站的用户请选择游客登录，如想再次使用同一账户，可记录下自己游客登录分配的昵称或id，下次登录时填写对应的昵称或ID选择用户登录即可</span>
+    </marquee>
+    <!--滚动条结束-->
+    <!--登录模块-->
+    <div class="login" v-show="login" >
+        <input type="button" value="游客登录" @click="jump" class="loginButton">
+        <br>
+        <input type="text" placeholder="输入用户名或id" id="loginText" >
+        <br>
+        <input type="button" value="用户登录" @click="oldLogin" class="loginButton">
+        <p>{{loginInfo}}</p>
+        <input type="button" value="查看排行榜" @click="jumpRank" class="loginButton"/>
+    </div>
+    <!--用户信息模块-->
+    <div class="userInfo" style="position: absolute;right: 20px">
+    <input type="button" @click="newLogin" value="个人信息" v-show="infoButton">
+    <p v-show="userDetail">你的个人信息<br>{{userName}} <br>{{id}}</p>
+    </div>
+    <!--出题模块-->
+    <div class="getTest" v-show="getButton">
+    <input type="text" placeholder="请输入题目数量" id="count">
+    <input type="button" value="获取题目" @click="getQuestion" >
+    </div>
+    <!--答题模块-->
+    <div class="doTest" v-show="testButton">
+        <form >
+    <p v-for="(item,i) in questions">{{i+1}}、{{item}}<input type="text" :id="'question_'+i" style="position:absolute; left: 300px;height: 25px;" placeholder="你的答案"/></p>
+        <div class="tests" v-show="tests">
+        <input type="button" value="提交" @click="verifyAnswer" class="testButton" >
+        <input type="reset" value="清空" class="testButton" >
+        </div>
+        </form>
+        <!--答题结果模块-->
+        <div class="testResult" v-show="testResult">
+            <h3>你的分数为{{score}}!</h3>
+            <br>
+        <div v-for="(item,i) in testDetail" class="answers" > {{i+1}}、 {{item}}</div>
+            <br>
+            <input type="button" value="查看排行榜" @click="jumpRank">
+        </div>
+
+    </div>
+    <!--小黄人模块-->
+    <div id="spig" class="spig" >
+        <div id="message">……</div>
+        <div id="mumu" class="mumu"></div>
+    </div>
+    <!--客服模块-->
+    <div class="service">
+        <div id="kefu">
+            <input type="checkbox" id="showKfList">
+            <label for="showKfList" class="topBtn"></label>
+            <span class="wechat">
+            <em class="eweima">
+              <img src="http://www.liurui13.cn/document/img/wx.png" alt="2">
+              <small>微信咨询</small>
+            </em>
+          </span>
+            <span class="qq" title="点击进行咨询" onClick="window.open('http://wpa.qq.com/msgrd?v=3&uin=2849236142&site=qq&menu=yes');"></span>
+            <span class="other">
+            <dl class="tel">
+              <dt>17805535685</dt>
+              <dd>7*24小时客服电话</dd>
+            </dl>
+          </span>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="math.js"></script>
+
+    <script type="text/javascript">
+        var isindex = true;
+        var title = "";
+        var visitor = "这位同学";
+    </script>
+    <!--精灵结束-->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            userName:"",
+            id:"",
+            questions:[],   /*问题数组*/
+            answers:[],     /*答案数组*/
+            getButton:false, /*显示出题按钮*/
+            question:"",    /*单个问题*/
+            answer:"",      /*单个答案*/
+            result:"",      /*getQuestion传来的数据*/
+            score:0,        /*得分*/
+            testButton:false,  /*测试栏显示*/
+            count:0,         /*题数*/
+            testResult:false,   /*测试结束显示*/
+            testDetail:[],
+            infoButton:false,
+            userDetail:false,
+            startTime:"",
+            endTime:"",
+            duringTime:"",
+            loginInfo:"",
+            login:true,
+            tests:false
+        },
+        methods:{
+            getQuestion:function(){
+                var that=this;
+                that.count= document.getElementById("count").value;
+                axios.get("http://www.liurui13.cn:8080/PrimarySchoolMathTest?count="+that.count).then
+                (function(response) {
+                    let backInfo = response.data;
+                    if (backInfo.length == that.count) {
+                        that.startTime = new Date();
+                        that.startTime.setTime(that.startTime.getTime());
+                        console.log(that.startTime)
+                        that.result = response.data;
+                        that.getButton = false;
+                        that.testButton = true;
+                        that.tests=true;
+                        for (var i = 0; i < that.result.length; i++) {
+                            that.question = that.result[i].question;
+
+                            that.questions.push(that.question);
+                            that.answers.push(that.result[i].answer);
+                        }
+                    }
+                    if (that.userName == "") {
+                        axios.get("http://www.liurui13.cn:8080/randomUserInfo").then
+                        (function (response) {
+                            that.infoButton = true;
+                            that.userDetail = true;
+                            that.userName = response.data.userName;
+                            that.id = response.data.id;
+                        }, function (err) {
+                            console.log(err);
+                        })
+                    }
+                })
+            },
+            verifyAnswer:function () {
+                var that=this;
+                that.testResult=true;
+                that.tests=false;
+                that.endTime=new Date();
+                that.duringTime=that.endTime-that.startTime;
+                console.log(that.duringTime)
+                var duringHour=Math.floor(that.duringTime/3600000);
+                var duringMin = Math.floor(that.duringTime%3600000/60000);
+                var duringSec = Math.floor(that.duringTime%3600000%60000/1000);
+                var duringBitSec=Math.floor(that.duringTime%3600000%60000%1000);
+                that.duringTime=duringHour+"小时"+duringMin+"分钟"+duringSec+"秒"+duringBitSec+"毫秒";
+                console.log(that.duringTime)
+
+                that.endTime.setTime(that.endTime.getTime());
+                for (var i=0;i<that.answers.length;i++){
+                    var res= document.getElementById("question_"+i).value;
+
+                    if (res==that.answers[i]){
+                        that.score+=(100.0/that.count)*1.0;
+                    }
+                    that.testDetail.push(that.questions[i]+"\xa0 \xa0 \xa0\xa0\xa0\xa0你的答案:"+res+"\xa0 \xa0\xa0\xa0\xa0\xa0正确答案："+that.answers[i])
+
+                }
+                that.score=Math.round(that.score);
+
+                    axios.get("http://www.liurui13.cn:8080/write?duringTime=" + that.duringTime +
+                        "&grade=" + that.score + "&userName=" + that.userName + "&id=" + that.id).then
+                    (function (response) {
+                        console.log(response.data)
+                    }, function (err) {
+                        console.log(err);
+                    })
+
+
+            },
+            newLogin:function(){
+                let that=this;
+                that.infoButton=true;
+                that.userDetail=true;
+            },
+            oldLogin: function () {
+                let that = this;
+                var info = document.getElementById('loginText').value;
+                console.log(info)
+                axios.get("http://www.liurui13.cn:8080/login?loginInfo="+info).then
+                (function (response) {
+                    console.log(response.data)
+                    if (response.data != "用户名或id错误") {
+                        that.getButton=true;
+                        that.loginInfo="";
+                        that.login=false;
+                        that.infoButton=true;
+                            that.userName=info;
+                            axios.get("http://www.liurui13.cn:8080/rank").then
+                            (function (response) {
+                                var results=response.data;
+                                console.log(results);
+                                for (var i=0;i<results.length;i++){
+                                    if (results[i].userName==that.userName){
+                                        that.id=results[i].id;
+                                    }
+                                }
+                                console.log(that.id)
+                            })
+                    } else {
+                        that.loginInfo = response.data;
+                        that.userName=document.getElementById('loginText').value;
+
+                    }
+                }, function (err) {
+                    console.log(err);
+                })
+            },jump: function () {
+                let that=this;
+                that.login=false;
+                that.getButton=true;
+                that.infoButton=true;
+            },
+            jumpRank:function () {
+               window.location.href='rank.html'
+            }
+        }
+    })
+</script>
+</body>
+</html>
